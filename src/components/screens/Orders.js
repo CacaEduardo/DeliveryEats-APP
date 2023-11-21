@@ -1,55 +1,63 @@
-import { ScrollView, View, Text, StyleSheet, Alert, ActivityIndicator} from "react-native"
+import { ScrollView, View, Text, StyleSheet, Alert} from "react-native"
 import Colors from "../../configs/Colors"
 import { TabNavigator } from "../layout/TabNavigator"
-import { CardPedidos } from "../atoms/CardPedidos"
+import { CardOrders } from "../atoms/CardOrders"
 import { Spacer } from "../atoms/Spacer"
-import { favoriteFood } from "../../interface/food/food-interface"
-import { useEffect, useState } from "react"
+import { orders } from "../../interface/order/order-interface"
+import { useState, useContext, useEffect } from "react"
+import { AuthContext } from "../../configs/Context"
 
-export const Dashboard = ({navigation}) => {
-    
+export const Orders = ({navigation}) => {
+
+    const {user} = useContext(AuthContext)
+
     const handleNavigate = (screen) => {
         navigation.navigate(screen)
     }
-
-    const [data, setData] = useState({})
+    const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
 
     useEffect(()=>{
-        
-        const loadFavorites = async () => {
+        const loadOrders = async () => {
             try{
                 setLoading(true)
-                const favorites = await favoriteFood()
-                setData(favorites)
+                const ordersData = await orders(user.id)
+                if(ordersData){
+                    setData(ordersData)
+                }
 
-            }catch (error){
-                Alert.alert('Ocorreu um erro ao carregar os favoritos')
+            }catch(error){
+                Alert.alert('Ocorreu um erro')
             }finally{
                 setLoading(false)
             }
+            
         }
 
-        loadFavorites()
+        loadOrders()
 
     },[])
+
 
     return(
         <View style={styles.container}>
             <View style={styles.titleScreenContainer}>
-                <Text style={styles.titleScreenText}>Destaques</Text>
+                <Text style={styles.titleScreenText}>Pedidos</Text>
             </View>
-            {loading &&
-                <ActivityIndicator size = 'large' color={Colors.primary}/>                
-            }
             <ScrollView style={styles.scrollview}>
-                {data?.length > 0 &&
+                {data.length > 0 ?  (
                     data.map((item, index) => (
                         <View key = {`card-pedidos-${index}`}>
-                            <CardPedidos item={item}/>
+                            <CardOrders item={item}/>
                             <Spacer size={1}/>
                         </View>
-                ))}
+                    ))
+                ) : (
+                    <View style = {{justifyContent: 'center', alignItems: 'center'}}>
+                        <Text>Não há pedidos realizados</Text>
+                    </View>
+                )
+                }
             </ScrollView>
             <TabNavigator handleNavigate={handleNavigate}/>
         </View>
@@ -60,11 +68,11 @@ export const Dashboard = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
+        paddingBottom: 85,
         flex: 1,
         backgroundColor: Colors.backgroundColor
     },
     titleScreenContainer:{
-        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomWidth: 0.2,
