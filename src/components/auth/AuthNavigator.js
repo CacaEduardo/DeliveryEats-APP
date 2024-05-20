@@ -6,6 +6,8 @@ import { Dashboard } from '../screens/Dashboard';
 import { Search } from '../screens/Search';
 import { Orders } from '../screens/Orders';
 import { User } from '../screens/User';
+import { Partners } from '../screens/Partners';
+import { Partner } from '../screens/Partner';
 import Colors from '../../configs/Colors';
 
 
@@ -47,6 +49,16 @@ export const AuthNavigator = () => {
             <Stack.Screen 
                 name="User"
                 component={User}
+                options= {{headerShown: false}}
+            />
+            <Stack.Screen 
+                name="Partners"
+                component={Partners}
+                options= {{headerShown: false}}
+            />
+            <Stack.Screen 
+                name="Partner"
+                component={Partner}
                 options= {{headerShown: false}}
             />
         </Stack.Navigator>

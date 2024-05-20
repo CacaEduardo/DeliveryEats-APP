@@ -16,6 +16,11 @@ export const TabNavigator = ({handleNavigate}) => {
                 <FontAwesome name="search" size={28} color={Colors.primary} />
                 <Text style={styles.titleMenu}>Buscar</Text>
             </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.columnFlex} onPress={() => handleNavigate('Partners')}>
+                <FontAwesome name="shopping-cart" size={28} color={Colors.primary} />
+                <Text style={styles.titleMenu}>Parceiros</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.columnFlex} onPress={() => handleNavigate('Orders')}>
                 <FontAwesome name="list" size={28} color={Colors.primary} />
