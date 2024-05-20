@@ -9,7 +9,7 @@ import { useState } from "react";
 export const CardPedidos = (props) => {
 
 
-    const {item, handlePress = () => {}, origin = 'home', backgroundColor = false, icon = true, valueQtd = '1', handleQtd } = props
+    const {item, handlePress = () => {}, origin = 'home', backgroundColor = false, icon = true, valueQtd = '1', handleQtd, noHandle = false } = props
 
 
     return(
@@ -34,31 +34,35 @@ export const CardPedidos = (props) => {
                     <Text style = {{color: "#FF8A00", marginLeft: 5}}>{item?.rating}</Text>
                 </View>
             </View>
-            {icon ? (
-                <View style={{padding: 10, justifyContent: 'center', marginLeft: 'auto'}}>
-                    {origin == 'home' ? (
-                        <FontAwesome name="heart-o" size={35} color={Colors.primary} />            
+            {!noHandle &&
+            <>
+                {icon ? (
+                    <View style={{padding: 10, justifyContent: 'center', marginLeft: 'auto'}}>
+                        {origin == 'home' ? (
+                            <FontAwesome name="heart-o" size={35} color={Colors.primary} />            
 
-                    ): (
-                        <TouchableOpacity 
-                        onPress = {handlePress}
-                        style = {{width: 30, height: 30, padding: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: Colors.secondary}}>
-                            <FontAwesome name="plus" size={20} color={Colors.primary} />            
-                        </TouchableOpacity>
-                    )
-                    }
-                </View>
-            ) : (
-                <View style = {{padding: 10, justifyContent: 'center', marginLeft: 'auto', alignItems: 'center'}}>
-                    <Text>qtd</Text>
-                    <TextInput 
-                        style = {styles.qtd}
-                        value = {valueQtd}
-                        onChangeText={(value) => handleQtd(value)}
-                        keyboardType="decimal-pad"
-                    />
-                </View>
-            )
+                        ): (
+                            <TouchableOpacity 
+                            onPress = {handlePress}
+                            style = {{width: 30, height: 30, padding: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 50, backgroundColor: Colors.secondary}}>
+                                <FontAwesome name="plus" size={20} color={Colors.primary} />            
+                            </TouchableOpacity>
+                        )
+                        }
+                    </View>
+                ) : (
+                    <View style = {{padding: 10, justifyContent: 'center', marginLeft: 'auto', alignItems: 'center'}}>
+                        <Text>qtd</Text>
+                        <TextInput 
+                            style = {styles.qtd}
+                            value = {valueQtd}
+                            onChangeText={(value) => handleQtd(value)}
+                            keyboardType="decimal-pad"
+                        />
+                    </View>
+                )
+                }
+            </>
             }
         </View>
     )
